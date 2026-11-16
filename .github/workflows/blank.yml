@@ -1,0 +1,45 @@
+
+name: Knight PC
+
+on:
+  workflow_dispatch:
+
+jobs:
+  knight-pc:
+    runs-on: windows-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Iniciar Knight PC
+        uses: actions/checkout@v4
+
+      - name: Informações do PC
+        shell: pwsh
+        run: |
+          Write-Host "===== KNIGHT PC ====="
+          Get-ComputerInfo |
+            Select-Object WindowsProductName, WindowsVersion
+
+      - name: Verificar processador
+        shell: pwsh
+        run: |
+          Get-CimInstance Win32_Processor |
+            Select-Object Name, NumberOfCores
+
+      - name: Verificar memória RAM
+        shell: pwsh
+        run: |
+          Get-CimInstance Win32_ComputerSystem |
+            Select-Object TotalPhysicalMemory
+
+      - name: Verificar placa de vídeo
+        shell: pwsh
+        run: |
+          Get-CimInstance Win32_VideoController |
+            Select-Object Name, DriverVersion
+
+      - name: Knight PC iniciado
+        shell: pwsh
+        run: |
+          Write-Host "KNIGHT PC ONLINE!"
+          Write-Host "Ambiente temporario do GitHub Actions."
